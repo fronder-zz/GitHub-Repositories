@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Alamofire
 
 class GitHub_RepositoriesUITests: XCTestCase {
 
@@ -26,9 +27,44 @@ class GitHub_RepositoriesUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testMainViewControllerSearchBegins() {
+        let app = XCUIApplication()
+        
+        let sortByElementsQuery = XCUIApplication().otherElements.containing(.staticText, identifier:"Sort by:")
 
+        let sortByForksStarsLabel = sortByElementsQuery.children(matching: .staticText).matching(identifier: "Sort by:").element(boundBy: 0)
+        XCTAssertTrue(sortByForksStarsLabel.exists)
+
+        let sortByOrderLabel = sortByElementsQuery.children(matching: .staticText).matching(identifier: "Sort by:").element(boundBy: 1)
+        XCTAssertTrue(sortByOrderLabel.exists)
+
+        let searchField = app.textFields["Search repository from GitHub"]
+        XCTAssertTrue(searchField.exists)
+
+        let searchButton = app.buttons["Search"]
+        XCTAssertTrue(searchButton.exists)
+    }
+    
+    func testMainViewControllerSearchFailed()  {
+        
+        let app = XCUIApplication()
+        let textField = app.textFields["Search repository from GitHub"]
+        XCTAssertTrue(textField.title.count == 0)
+        
+        app.buttons["Search"].tap()
+        
+        let expectation1 = self.expectation(description: "Alert dialog show")
+        let _ = XCTWaiter.wait(for: [expectation1], timeout: 0.5)
+        
+        let alertDialog = app.otherElements["SCLAlertView"].children(matching: .other).element.children(matching: .other).element.children(matching: .textView).element
+        XCTAssertTrue(alertDialog.exists)
+        
+        app/*@START_MENU_TOKEN@*/.buttons["OK"]/*[[".otherElements[\"SCLAlertView\"].buttons[\"OK\"]",".buttons[\"OK\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+
+        let expectation2 = self.expectation(description: "Alert dialog hide")
+        let _ = XCTWaiter.wait(for: [expectation2], timeout: 0.5)
+
+        XCTAssertFalse(alertDialog.exists)
+    }
+    
 }

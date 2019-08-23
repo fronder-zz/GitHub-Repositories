@@ -13,16 +13,18 @@ import SwiftyJSON
 
 protocol ServiceProtocol {
     
-    associatedtype ResponseData = Observable<JSON>
+    associatedtype ServiceResponseResult = Observable<JSON>
     typealias Parameters = [String : Any]
     
     // GET
-    func GET(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ResponseData
+    func GET(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ServiceResponseResult
     // POST
-    func POST(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ResponseData
+    func POST(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ServiceResponseResult
     // PUT
-    func PUT(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ResponseData
+    func PUT(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ServiceResponseResult
     // DELETE
-    func DELETE(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ResponseData
-    func request(method: HTTPMethod, endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ResponseData
+    func DELETE(endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ServiceResponseResult
+    
+    // Common
+    func request(method: HTTPMethod, endpoint: String, parameters: Parameters?, headers: HTTPHeaders?) -> ServiceResponseResult
 }

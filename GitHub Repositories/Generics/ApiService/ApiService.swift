@@ -17,11 +17,11 @@ enum Endpoint: String {
     case repositories = "/search/repositories"
 }
 
-protocol ServiceError {
+protocol ServiceErrorProtocol {
     var message: String? { get }
 }
 
-class ApiService: Service {
+class ApiService: ServiceProtocol {
     
     // MARK: Constants
     
@@ -47,22 +47,23 @@ class ApiService: Service {
     
     // MARK: Public
     
+    // GET request
     func GET(endpoint: String, parameters: ApiService.Parameters? = nil, headers: HTTPHeaders? = nil) -> Observable<JSON> {
         return request(method: .get, endpoint: endpoint, parameters: parameters, headers: headers)
     }
-    
+    // POST request
     func POST(endpoint: String, parameters: ApiService.Parameters?, headers: HTTPHeaders?) -> Observable<JSON> {
         return request(method: .post, endpoint: endpoint, parameters: parameters, headers: headers)
     }
-    
+    // PUT request
     func PUT(endpoint: String, parameters: ApiService.Parameters?, headers: HTTPHeaders?) -> Observable<JSON> {
         return request(method: .put, endpoint: endpoint, parameters: parameters, headers: headers)
     }
-    
+    // DELETE request
     func DELETE(endpoint: String, parameters: ApiService.Parameters?, headers: HTTPHeaders?) -> Observable<JSON> {
         return request(method: .delete, endpoint: endpoint, parameters: parameters, headers: headers)
     }
-    
+    // Common request execution
     func request(method: HTTPMethod, endpoint: String, parameters: ApiService.Parameters?, headers: HTTPHeaders?) -> Observable<JSON>
     {
         let urlString = baseUrl + endpoint

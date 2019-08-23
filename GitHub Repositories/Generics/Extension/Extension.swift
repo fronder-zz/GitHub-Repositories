@@ -10,11 +10,13 @@ import UIKit
 import SCLAlertView
 import KRProgressHUD
 
-enum ShowActionType: Int {
-    case show = 1, dismiss
-}
+
 
 extension UIViewController {
+    
+    enum ShowActionType: Int {
+        case show = 1, dismiss
+    }
     
     // MARK: - Alert
     
@@ -51,6 +53,33 @@ extension UIViewController {
         case .dismiss:
             KRProgressHUD.dismiss(completeHandler)
             break
+        }
+    }
+}
+
+
+extension UIView {
+    
+    func animateFor(isHighlighted: Bool, completion: ((Bool) -> Void)? = nil) {
+        let animationOptions: UIView.AnimationOptions = [.allowUserInteraction]
+        if isHighlighted {
+            UIView.animate(
+                withDuration: 0.5,
+                delay: 0,
+                usingSpringWithDamping: 1,
+                initialSpringVelocity: 0,
+                options: animationOptions, animations: {
+                    self.transform = .init(scaleX: 1.2, y: 1.2)
+            }, completion: completion)
+        } else {
+            UIView.animate(
+                withDuration: 0.5,
+                delay: 0,
+                usingSpringWithDamping: 1,
+                initialSpringVelocity: 0,
+                options: animationOptions, animations: {
+                    self.transform = .identity
+            }, completion: completion)
         }
     }
 }

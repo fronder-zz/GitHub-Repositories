@@ -13,4 +13,5 @@ import UIKit
     
     @objc optional func numberOfSections() -> Int
     @objc optional func heightForRowAt(indexPath: IndexPath) -> CGFloat
+    @objc optional func cellForRawAt(indexPath: IndexPath, tableView: UITableView) -> UITableViewCell
 }
